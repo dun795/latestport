@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio Website of [Your Name] - Full-stack Developer">
+  <title>Home Duncan</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+     <!-- Header -->
+    <header class="header">
+      <nav class="navbar">
+        <a href="projects.html" class="logo">Duncan Resume</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="download-my-cv.html">Download CV</a></li>
+        </ul>
+      </nav>
+  </header>
+
+  <!-- Hero  Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Hi, I'm Duncan Sihongo</h1>
+      <p>Full-Stack Developer | Problem Solver | Tech Enthusiast</p>
+      <a href="#about" class="btn">Learn More</a>
+    </div>
+    <div class="hero-image">
+      <img src="images/duncan.jpg" alt="duncan" />
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about fade-in">
+    <h2>About Me</h2>
+    <p>
+      I am a passionate software developer specializing in creating clean, modern, and efficient web applications. 
+      I thrive on solving complex problems and building user-friendly digital experiences.
+    </p>
+  </section>
+
+  <!-- Highlights Section -->
+  <section class="highlights fade-in">
+    <h2>Highlights</h2>
+    <div class="highlight-cards">
+      <div class="card">
+        <h3>Experience</h3>
+        <p>Over 3 years of experience in full-stack web development.</p>
+      </div>
+      <div class="card">
+        <h3>Technologies</h3>
+        <p>Proficient in JavaScript, React, Node.js, Python, and more.</p>
+      </div>
+      <div class="card">
+        <h3>Achievements</h3>
+        <p>Developed scalable apps with 100K+ users.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Contact Me</h2>
+    <p>If you'd like to collaborate or hire me, feel free to send a message!</p>
+    <form id="contactForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" placeholder="Your Name" required />
+  
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" placeholder="Your Email" required />
+  
+      <label for="message">Message:</label>
+      <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+  
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+  </section>
+
+
+  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script src="script.js"></script>  
+
+  <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "hWoqjWtrA9ReGybO5",
+      });
+   })();
+</script>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 Duncan Sihongo. All rights reserved.</p>
+  </footer>
+</body>
+</html>
