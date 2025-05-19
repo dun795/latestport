@@ -2,17 +2,25 @@
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();
-
     const target = document.querySelector(this.getAttribute("href"));
-    target.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   });
 });
 
 // Add animations on scroll
 const fadeInElements = document.querySelectorAll(".fade-in");
+const debounce = (func, delay) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
+  };
+};
 
 const onScroll = () => {
   fadeInElements.forEach(el => {
@@ -23,27 +31,22 @@ const onScroll = () => {
   });
 };
 
-window.addEventListener("scroll", onScroll);
-
-// Trigger the scroll event to load visible elements on page load
-onScroll();
+window.addEventListener("scroll", debounce(onScroll, 100));
+onScroll(); // Trigger on page load
 
 // Initialize EmailJS
 emailjs.init("PMe7p2aB6o1OnkkjV"); // Replace with your actual User ID
 
 // Handle Contact Form Submission
 const contactForm = document.getElementById("contactForm");
-
-contactForm.addEventListener("submit", function (e) {
-  e.preventDefault(); // Prevent default form submission
-
-  // Get form values
+contactForm?.addEventListener("submit", function (e) {
+  e.preventDefault();
+  
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const message = document.getElementById("message").value.trim();
 
-  // Validate form inputs
-  if (name === "" || email === "" || message === "") {
+  if (!name || !email || !message) {
     alert("Please fill out all fields.");
     return;
   }
@@ -53,28 +56,15 @@ contactForm.addEventListener("submit", function (e) {
     return;
   }
 
-  // Log the form values to the console for debugging
-  console.log("Form Data:", { name, email, message });
-
-  // Log before sending the email
   console.log("Sending email...");
-
-  // Send email using EmailJS
-  emailjs
-    .send("service_199u7yr", "template_1kfpiwa", {
-      name: name,
-      email: email,
-      message: message,
-    })
+  emailjs.send("service_199u7yr", "template_1kfpiwa", { name, email, message })
     .then(
-      function () {
-        // Log success
+      () => {
         console.log("Email sent successfully!");
         alert("Message sent successfully!");
-        contactForm.reset(); // Clear the form after successful submission
+        contactForm.reset();
       },
-      function (error) {
-        // Log error
+      error => {
         console.error("Failed to send email:", error);
         alert("Failed to send message. Error: " + error.text);
       }
@@ -86,60 +76,62 @@ function validateEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email);
 }
+
 // Chat Widget Toggle
 const chatToggle = document.getElementById("chat-toggle");
 const chatBox = document.getElementById("chat-box");
-
-chatToggle.addEventListener("click", function () {
-  chatBox.classList.toggle("hidden");
+chatToggle?.addEventListener("click", () => {
+  chatBox?.classList.toggle("hidden");
 });
 
 // Highlight the active navigation link
 const navLinks = document.querySelectorAll(".nav-links a");
-const currentPage = window.location.pathname.split("/").pop();
-
+const currentPage = window.location.pathname;
 navLinks.forEach(link => {
-  if (link.getAttribute("href") === currentPage) {
+  if (currentPage.includes(link.getAttribute("href"))) {
     link.classList.add("active");
   }
 });
 
-// JavaScript to toggle visibility of project info when clicking "View More"
-document.querySelectorAll('.view-more-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const projectInfo = button.nextElementSibling;
-    projectInfo.style.display = projectInfo.style.display === 'block' ? 'none' : 'block';
-  });
+// Toggle visibility of project info
+document.body.addEventListener("click", event => {
+  if (event.target.classList.contains("view-more-btn")) {
+    const projectInfo = event.target.nextElementSibling;
+    if (projectInfo) {
+      projectInfo.style.display = projectInfo.style.display === "block" ? "none" : "block";
+    }
+  }
 });
 
-document.getElementById('cv-form').addEventListener('submit', function(event) {
+// CV Form Submission
+document.getElementById("cv-form")?.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const firstName = document.getElementById('first-name').value.trim();
-  const lastName = document.getElementById('last-name').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const contact = document.getElementById('contact').value.trim();
+  const firstName = document.getElementById("first-name").value.trim();
+  const lastName = document.getElementById("last-name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const contact = document.getElementById("contact").value.trim();
 
-  if (firstName && lastName && email && contact.match(/^\d{10}$/)) {
-    // Send data to the server to be saved in a JSON file
-    fetch('/save-details', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ firstName, lastName, email, contact }),
-    })
+  if (!firstName || !lastName || !validateEmail(email) || !contact.match(/^\d{10}$/)) {
+    alert("Please fill in the details correctly.");
+    return;
+  }
+
+  fetch("/save-details", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ firstName, lastName, email, contact }),
+  })
     .then(response => response.json())
     .then(data => {
-      // Show the download button if the details are saved
       if (data.success) {
-        document.getElementById('download-btn').style.display = 'block';
+        document.getElementById("download-btn").style.display = "block";
       }
     })
     .catch(err => {
-      console.error('Error:', err);
+      console.error("Error:", err);
+      alert("There was an error saving your details. Please try again later.");
     });
-  } else {
-    alert('Please fill in the details correctly.');
-  }
 });
