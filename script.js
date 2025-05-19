@@ -29,7 +29,7 @@ window.addEventListener("scroll", onScroll);
 onScroll();
 
 // Initialize EmailJS
-emailjs.init("hWoqjWtrA9ReGybO5"); // Replace with your actual User ID
+emailjs.init("PMe7p2aB6o1OnkkjV"); // Replace with your actual User ID
 
 // Handle Contact Form Submission
 const contactForm = document.getElementById("contactForm");
